@@ -968,7 +968,6 @@ export default async function getBaseWebpackConfig(
         'process.env.__NEXT_PRERENDER_INDICATOR': JSON.stringify(
           config.devIndicators.autoPrerender
         ),
-        'process.env.__NEXT_PLUGINS': JSON.stringify(true),
         'process.env.__NEXT_STRICT_MODE': JSON.stringify(
           config.reactStrictMode
         ),

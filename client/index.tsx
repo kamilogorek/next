@@ -335,18 +335,15 @@ export default async (opts: { webpackHMR?: any } = {}) => {
     defaultLocale,
   })
 
-  // call init-client middleware
-  if (process.env.__NEXT_PLUGINS) {
-    // @ts-ignore
-    // eslint-disable-next-line
-    import('next-plugin-loader?middleware=on-init-client!')
-      .then((initClientModule) => {
-        return initClientModule.default({ router })
-      })
-      .catch((initClientErr) => {
-        console.error('Error calling client-init for plugins', initClientErr)
-      })
-  }
+  // @ts-ignore
+  // eslint-disable-next-line
+  import('next-plugin-loader?middleware=on-init-client!')
+    .then((initClientModule) => {
+      return initClientModule.default({ router })
+    })
+    .catch((initClientErr) => {
+      console.error('Error calling client-init for plugins', initClientErr)
+    })
 
   const renderCtx = {
     App: CachedApp,
@@ -411,26 +408,24 @@ export function renderError(renderErrorProps: RenderErrorProps) {
     })
   }
 
-  if (process.env.__NEXT_PLUGINS) {
-    // @ts-ignore
-    // eslint-disable-next-line
-    import('next-plugin-loader?middleware=on-error-client!')
-      .then((onClientErrorModule) => {
-        return onClientErrorModule.default({
-          err,
-          errorInfo,
-          renderErrorProps,
-          data,
-          version,
-        })
+  // @ts-ignore
+  // eslint-disable-next-line
+  import('next-plugin-loader?middleware=on-error-client!')
+    .then((onClientErrorModule) => {
+      return onClientErrorModule.default({
+        err,
+        errorInfo,
+        renderErrorProps,
+        data,
+        version,
       })
-      .catch((onClientErrorErr) => {
-        console.error(
-          'error calling on-error-client for plugins',
-          onClientErrorErr
-        )
-      })
-  }
+    })
+    .catch((onClientErrorErr) => {
+      console.error(
+        'error calling on-error-client for plugins',
+        onClientErrorErr
+      )
+    })
 
   // Make sure we log the error to the console, otherwise users can't track down issues.
   console.error(err)
