@@ -222,5 +222,10 @@
   },
   "engines": {
     "node": ">=10.13.0"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
   }
 }

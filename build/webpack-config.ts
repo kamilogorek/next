@@ -215,17 +215,15 @@ export default async function getBaseWebpackConfig(
 
   const hasRewrites = rewrites.length > 0 || dev
 
-  if (config.experimental.plugins) {
-    plugins = await collectPlugins(dir, config.env, config.plugins)
-    pluginLoaderOptions.plugins = plugins
+  plugins = await collectPlugins(dir, config.env, config.plugins)
+  pluginLoaderOptions.plugins = plugins
 
-    for (const plugin of plugins) {
-      if (plugin.middleware.includes('babel-preset-build')) {
-        babelPresetPlugins.push({
-          dir: plugin.directory,
-          config: plugin.config,
-        })
-      }
+  for (const plugin of plugins) {
+    if (plugin.middleware.includes('babel-preset-build')) {
+      babelPresetPlugins.push({
+        dir: plugin.directory,
+        config: plugin.config,
+      })
     }
   }
 
@@ -266,9 +264,7 @@ export default async function getBaseWebpackConfig(
     /next[\\/]dist[\\/]client/,
     /next[\\/]dist[\\/]pages/,
     /[\\/](strip-ansi|ansi-regex)[\\/]/,
-    ...(config.experimental.plugins
-      ? VALID_MIDDLEWARE.map((name) => new RegExp(`src(\\\\|/)${name}`))
-      : []),
+    ...VALID_MIDDLEWARE.map((name) => new RegExp(`src(\\\\|/)${name}`)),
   ]
 
   // Support for NODE_PATH
@@ -972,9 +968,7 @@ export default async function getBaseWebpackConfig(
         'process.env.__NEXT_PRERENDER_INDICATOR': JSON.stringify(
           config.devIndicators.autoPrerender
         ),
-        'process.env.__NEXT_PLUGINS': JSON.stringify(
-          config.experimental.plugins
-        ),
+        'process.env.__NEXT_PLUGINS': JSON.stringify(true),
         'process.env.__NEXT_STRICT_MODE': JSON.stringify(
           config.reactStrictMode
         ),
@@ -1197,7 +1191,7 @@ export default async function getBaseWebpackConfig(
       modern: config.experimental.modern,
       buildActivity: config.devIndicators.buildActivity,
       autoPrerender: config.devIndicators.autoPrerender,
-      plugins: config.experimental.plugins,
+      plugins: true,
       reactStrictMode: config.reactStrictMode,
       reactMode: config.experimental.reactMode,
       optimizeFonts: config.experimental.optimizeFonts,
